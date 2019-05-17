@@ -4,7 +4,7 @@ interface FetchBody {
   path: string;
   token?: string;
   body?: string;
-  headers?: object;
+  headers?: ObjectHeader;
 }
 
 interface Fetch extends FetchBody {
@@ -12,12 +12,12 @@ interface Fetch extends FetchBody {
   url: string;
 }
 
-const appFetch = async ({ url, method, path, body, headers = {} }: Fetch) => {
+type ObjectHeader = {[key: string]: any};
+
+const appFetch = async ({ url, method, path, body, headers }: Fetch) => {
   const response = await fetch(`${url}${path}`, {
     method,
-    headers: {
-      ...headers
-    },
+    headers,
     body
   });
 
@@ -33,16 +33,16 @@ const appFetch = async ({ url, method, path, body, headers = {} }: Fetch) => {
   }
 };
 
-export const put = (url: string, defaultHeaders?: any) => ({ headers, ...data }: FetchBody) => {
+export const put = (url: string, defaultHeaders?: ObjectHeader) => ({ headers, ...data }: FetchBody) => {
   return appFetch({ url, method: "PUT", headers: merge(defaultHeaders, headers), ...data });
 };
-export const post = (url: string, defaultHeaders?: any) => ({ headers, ...data }: FetchBody) => {
+export const post = (url: string, defaultHeaders?: ObjectHeader) => ({ headers, ...data }: FetchBody) => {
   return appFetch({ url, method: "POST", headers: merge(defaultHeaders, headers), ...data });
 };
-export const get = (url: string, defaultHeaders?: any) => ({ headers, ...data }: FetchBody) => {
+export const get = (url: string, defaultHeaders?: ObjectHeader) => ({ headers, ...data }: FetchBody) => {
   return appFetch({ url, method: "GET", headers: merge(defaultHeaders, headers), ...data });
 };
-export const del = (url: string, defaultHeaders?: any) => ({ headers, ...data }: FetchBody) => {
+export const del = (url: string, defaultHeaders?: ObjectHeader) => ({ headers, ...data }: FetchBody) => {
   return appFetch({ url, method: "DELETE", headers: merge(defaultHeaders, headers), ...data });
 };
 
